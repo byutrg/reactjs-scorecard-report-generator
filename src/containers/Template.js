@@ -9,10 +9,12 @@ class Template extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <Title>
-          MQM Scorecard Reports Generator
-        </Title>
-        <ScorecardReportsGenerator/>
+        <div>
+          <Title>
+            MQM Scorecard Reports Generator
+          </Title>
+          <ScorecardReportsGenerator/>
+        </div>
       </MuiThemeProvider>
     )
   }

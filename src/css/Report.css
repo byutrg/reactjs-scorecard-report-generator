@@ -1,0 +1,126 @@
+/* #SCORE CONTAINER# */
+#scoreContainer {
+  margin: 25px 100px 100px 100px;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#scoreContainer p.headerItem {
+  margin: 0;
+  padding: 5px;
+}
+/* #END SCORE CONTAINER# */
+
+/* #SEGMENTS CONTAINER# */
+#segmentsContainer {
+  border: 1px solid black;
+}
+
+#segmentsContainer tr.segmentsHeader {
+  height: 60px;
+  font-size: 1.3em;
+}
+
+#segmentsContainer tr.top td {
+  padding: 15px 5px;
+  border: 1px solid black;
+  border-bottom: none;
+}
+
+#segmentsContainer tr.bottom td {
+  border: 1px solid black;
+  border-top: none;
+  padding: 15px 5px;
+}
+
+#segmentsContainer tr.bottom td.issuesCell div.issueMarkRow {
+  margin: 2px;
+  font-size: 1.05em;
+  padding: 5px;
+}
+
+#segmentsContainer tr.bottom td.issuesCell span.issueMark span {
+  font-size: 1.05em;
+  height: 1.1em;
+  padding: 2px;
+}
+
+#segmentsContainer td.numCol {
+  width: 20px;
+}
+
+#segmentsContainer td.segmentCol {
+  width: 300px !important;
+}
+
+#segmentsContainer td.notesCol {
+  width: 150px;
+}
+/* #END SEGMENTS CONTAINER# */
+
+
+/* #REPORT CONTAINER# */
+#reportContainer {
+  margin: 100px;
+  margin-top: 0;
+}
+
+#report {
+  margin: 0 100px;
+	border: 2px solid black;
+	border-collapse: collapse;
+}
+
+#report th, #report td {
+	border: 2px solid black;
+	padding: 5px;
+}
+
+#report th {
+	background-color: #c5d1eb;
+}
+
+#report td {
+	text-align: right;
+}
+
+#report .minor {
+	background-color: #feffdb;
+}
+
+#report .major {
+	background-color: #ffe5c9;
+}
+
+#report .critical {
+	background-color: #ffeae5;
+}
+
+#report .white {
+	background-color: #white;
+}
+
+#report td.subheading {
+	background-color: #65699e;
+	color: #dfd998;
+	text-align: center;
+	font-weight: bold;
+}
+
+#report span.red {
+	color: red;
+	font-weight: bold;
+}
+
+#report td.strong {
+	font-weight: bold;
+}
+
+#report tr.subtotal {
+	background-color: #f4ed96;
+}
+
+#report tr.total {
+	background-color: #d6e3ff;
+}
+/* #END REPORT CONTAINER# */

@@ -6,27 +6,19 @@ import uploadRed from '../images/upload-icon-red.png'
 import uploadYellow from '../images/upload-icon-yellow.png'
 import uploadGreen from '../images/upload-icon-green.png'
 
-const UploadButton = ({buttonLabel}) => (
-  <RaisedButton
-    label={buttonLabel}
-    labelPosition="before"
-    style={styles.uploadButton}
-    containerElement="label"
-  >
-    <input type="file" style={styles.exampleImageInput} />
-  </RaisedButton>
-)
-
-// export const UploadBlock = ({circleNumber, imageColor, buttonLabel}) => {
 class UploadBlock extends Component {
   // = (circleNumber, imageColor, buttonLabel)
 
   state = {
-    imageSource: ''
+    imageSource: '',
+    buttonLabel: '',
+    fileTypes: '' //comma delimited list of file types: ".txt, .csv"
   }
 
-  componentWillMount(imageColor = this.props.imageColor) {
-    switch(imageColor) {
+  componentWillMount() {
+    this.setState({buttonLabel: this.props.buttonLabel, fileTypes: this.props.fileTypes})
+
+    switch(this.props.imageColor) {
       case 'red':
         this.setState({imageSource: uploadRed})
         break
@@ -39,16 +31,28 @@ class UploadBlock extends Component {
     }
   }
 
-  render (circleNumber = this.props.circleNumber, buttonLabel = this.props.buttonLabel) {
+  upload = (file) => {
+    if (this.props.uploadTask(file.target.files[0]))
+    {
+      this.setState({buttonLabel: file.target.files[0].name.substring(0,24)})
+    }
+  }
+
+  render () {
     return (
       <UploadContainer>
-        <CircleNumber>{circleNumber}</CircleNumber>
+        <CircleNumber>{this.props.circleNumber}</CircleNumber>
         <UploadImage
           src={this.state.imageSource}
         />
-        <UploadButton
-          buttonLabel={buttonLabel}
-        />
+        <RaisedButton
+          label={this.state.buttonLabel}
+          labelPosition="before"
+          style={styles.uploadButton}
+          containerElement="label"
+        >
+          <input type="file" style={styles.exampleImageInput} onChange={this.upload} accept={this.state.fileTypes}/>
+        </RaisedButton>
       </UploadContainer>
     )
   }

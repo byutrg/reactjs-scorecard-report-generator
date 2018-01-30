@@ -1,11 +1,10 @@
-import React from 'react'
 import styled from 'styled-components'
 
 export const styles = {
   uploadButton: {
     width: '85%',
     margin: '20px 0px 20px 20px',
-    'border-radius': 5
+    borderRadius: 5
   },
   exampleImageInput: {
     cursor: 'pointer',
