@@ -1,6 +1,4 @@
-import React from 'react'
 import styled from 'styled-components'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 export const styles = {
   submitButton: {
@@ -13,14 +11,6 @@ export const styles = {
     margin: '0 auto',
     position: 'relative',
     bottom: 20
-  },
-
-  radioGroup: {
-    width: 40,
-    margin: '0 auto',
-    position: 'relative',
-    left: -25,
-    bottom: 115
   }
 }
 
@@ -38,22 +28,6 @@ export const CircleNumber = styled.div`
   left: 320px;
   bottom: 140px;
 `
-
-export const RadioGroup = ({circleNumber, selected, callback}) => (
-  <div>
-    <CircleNumber>{circleNumber}</CircleNumber>
-    <RadioButtonGroup name="acceptance" defaultSelected={selected} onChange={callback} style={styles.radioGroup}>
-        <RadioButton
-          value={'Acceptable'}
-          label="Acceptable"
-        />
-        <RadioButton
-          value={'Unacceptable'}
-          label="Unacceptable"
-        />
-      </RadioButtonGroup>
-    </div>
-)
 
 export const Container = styled.div`
   margin: 30px auto;

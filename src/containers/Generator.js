@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import {Container} from '../styled/ScorecardReportsGenerator'
+import {Container} from '../styled/FileUploader'
 
 class Generator extends Component {
 
@@ -12,16 +12,15 @@ class Generator extends Component {
     super(props)
 
     this.state = {
-      acceptance: this.props.location.state.acceptance,
-
       originalReady: false,
       revisedReady: false,
       scorecardReportReady: false,
 
-      sourceOriginal: [],
-      sourceRevised: [],
+      sourceOriginal: ('report_data' in window) ? window.report_data.segments.source : [],
+      targetOriginal: ('report_data' in window) ? window.report_data.segments.target : [],
 
-      targetOriginal: [],
+      useRevised: ('report_data' in window) ? window.report_data.useRevised : false,
+      sourceRevised: [],
       targetRevised: [],
 
       scorecardReport: null,
@@ -31,21 +30,37 @@ class Generator extends Component {
   }
 
   componentWillMount() {
-    if (this.props.location.state === undefined) {
+    if (typeof(this.props.location.state) === 'undefined') {
       this.props.history.push('/')
     }
 
-    this.setOriginalContents()
-    this.setRevisedContents()
-    this.setScorecarReportContents()
+
+    if (this.state.sourceOriginal.length < 1 || this.state.targetOriginal.length < 1) {
+      this.setOriginalContents()
+    } else {
+      this.setState({originalReady: true})
+    }
+
+    if (this.state.useRevised && (this.state.sourceRevised.length < 1 || this.state.targetRevised.length < 1)) {
+      this.setRevisedContents()
+    }
+
+    if (!('report_data' in window)) {
+      this.setScorecarReportContents()
+    } else {
+      this.setState({
+         scorecardReport: window.report_data,
+         scorecardReportReady: true
+      })
+    }
     this.checkContents()
+
   }
 
   generateReport() {
     this.props.history.push({
       pathname: '/report',
       state: {
-        acceptance: this.state.acceptance,
         sourceSegments: this.state.sourceOriginal,
         targetOriginal: this.state.targetOriginal,
         targetRevised: this.state.targetRevised,
@@ -55,7 +70,7 @@ class Generator extends Component {
   }
 
   checkContents = function() {
-    if (this.state.originalReady && this.state.revisedReady && this.state.scorecardReportReady) {
+    if (this.state.originalReady && (this.state.revisedReady || !this.state.useRevised) && this.state.scorecardReportReady) {
       this.alignContents() ? this.generateReport() : this.triggerBadUpload()
     } else {
       setTimeout(this.checkContents, 1000)
@@ -149,10 +164,17 @@ class Generator extends Component {
   alignContents() {
     var aligned = true
 
-    if(!this.checkContentMatch(this.state.sourceOriginal, this.state.sourceRevised, 5) ||
-      !this.checkContentMatch(this.state.targetOriginal, this.state.targetRevised)
-    ) {
-      aligned = false
+    if (this.state.targetRevised.length > 0) {
+      if(!this.checkContentMatch(this.state.sourceOriginal, this.state.sourceRevised, 5) ||
+        !this.checkContentMatch(this.state.targetOriginal, this.state.targetRevised)
+      ) {
+        aligned = false
+      }
+    } else {
+      if (this.state.sourceOriginal.length !== this.state.targetOriginal.length) {
+        console.log(this.state.sourceOriginal.length +  " " + this.state.targetOriginal.length)
+        aligned = false
+      }
     }
 
     return aligned

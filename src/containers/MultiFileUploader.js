@@ -3,10 +3,10 @@ import {withRouter} from 'react-router-dom'
 
 import RaisedButton from 'material-ui/RaisedButton'
 
-import {Container, TopContainer, RadioGroup, styles} from '../styled/ScorecardReportsGenerator'
+import {Container, TopContainer, styles} from '../styled/MultiFileUploader'
 import UploadBlock from '../containers/UploadBlock'
 
-class ScorecardReportsGenerator extends Component {
+class MultiFileUploader extends Component {
 
   state = {
     acceptance: 'Acceptable',
@@ -91,11 +91,6 @@ class ScorecardReportsGenerator extends Component {
               uploadTask={this.uploadScorecardData}
               fileTypes=".json"
             />
-          <RadioGroup
-            circleNumber='4'
-            selected={this.state.acceptance}
-            callback={this.setAcceptance}
-            />
         </TopContainer>
         <RaisedButton
           label="Generate Report"
@@ -109,4 +104,4 @@ class ScorecardReportsGenerator extends Component {
     )
   }
 }
-export default withRouter(ScorecardReportsGenerator)
+export default withRouter(MultiFileUploader)

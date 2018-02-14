@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
-import ScorecardReportsGenerator from '../containers/ScorecardReportsGenerator'
+import MultiFileUploader from '../containers/MultiFileUploader'
 import Title from '../containers/Title'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-class Template extends Component {
-
-
+class SecondaryTemplate extends Component {
   render() {
     return (
       <MuiThemeProvider>
@@ -13,11 +11,11 @@ class Template extends Component {
           <Title>
             MQM Scorecard Reports Generator
           </Title>
-          <ScorecardReportsGenerator/>
+          <MultiFileUploader/>
         </div>
       </MuiThemeProvider>
     )
   }
 }
 
-export default Template
+export default SecondaryTemplate

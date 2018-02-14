@@ -53,6 +53,10 @@
   width: 300px !important;
 }
 
+#segmentsContainer td.segmentColLarge {
+  width: 450px !important;
+}
+
 #segmentsContainer td.notesCol {
   width: 150px;
 }

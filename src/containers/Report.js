@@ -50,7 +50,6 @@ class Report extends Component {
     }
 
     this.state = {
-      acceptance: this.props.location.state.acceptance,
       sourceSegments: this.props.location.state.sourceSegments,
       targetOriginal: this.props.location.state.targetOriginal,
       targetRevised: this.props.location.state.targetRevised,
@@ -84,7 +83,7 @@ class Report extends Component {
       $('link[rel="stylesheet"]').each(function(index, value){
         $.get($(value).attr('href'), function(data){
           $(value).replaceWith($('<style type="text/css"></style>').text(data))
-        }.bind(value))
+        })
       })
 
       this.setState({
@@ -196,9 +195,11 @@ class Report extends Component {
       rows.push(
         <tr key={rowBuilder.segmentId} className='top'>
           <td className='numCol'>{rowBuilder.segmentId}</td>
-          <td className='segmentCol'>{rowBuilder.source}</td>
-          <td className='segmentCol'>{rowBuilder.targetOriginal}</td>
-          <td className='segmentCol'>{rowBuilder.targetRevised}</td>
+          <td className={this.state.targetRevised.length > 0 ? "segmentCol" : "segmentColLarge"}>{rowBuilder.source}</td>
+          <td className={this.state.targetRevised.length > 0 ? "segmentCol" : "segmentColLarge"}>{rowBuilder.targetOriginal}</td>
+          {this.state.targetRevised.length > 0 &&
+            <td className='segmentCol'>{rowBuilder.targetRevised}</td>
+          }
           <td className='notesCol'>{rowBuilder.notes}</td>
         </tr>
       )
@@ -208,7 +209,9 @@ class Report extends Component {
             <td></td>
             <td className='issuesCell'>{this.rowifyIssues(rowBuilder.issuesSource)}</td>
             <td className='issuesCell'>{this.rowifyIssues(rowBuilder.issuesTarget)}</td>
-            <td></td>
+            {this.state.targetRevised.length > 0 &&
+              <td></td>
+            }
             <td></td>
           </tr>
         )
@@ -286,12 +289,15 @@ class Report extends Component {
     $('noscript').text('')
 
     $('.manualInfo').each(function(index,value){
-      $(value).replaceWith($('<span class="manualInfo"></span>').text($(value).val()))
+      $(value).replaceWith($('<span id="docName" class="manualInfo"></span>').text($(value).val()))
     })
 
     var content = document.documentElement.outerHTML
-    var converted = htmlDocx.asBlob(content, {orientation: 'landscape', margins: {top: 720, right: 65, left: 65}});
-    FileSaver.saveAs(converted, 'test.docx');
+    var converted = htmlDocx.asBlob(content, {orientation: 'landscape', margins: {top: 720, right: 65, left: 65}})
+    var filename = ('report_data' in window) ? window.report_data.projectName+"_report_"+Moment().format('D-MM-YYYY') + ".docx" :
+                  ($("#docName").text() !== '') ? $('#docName').text() + "_" + Moment().format('D-MM-YYYY') + ".docx" :
+                                                "scorecardProjectReport_" + Moment().format('D-MM-YYYY') + ".docx"
+    FileSaver.saveAs(converted, filename)
 
     this.setState({
       printButton: this.printButton.filled,
@@ -312,7 +318,9 @@ class Report extends Component {
         <div>
           <div>
             {this.state.printButton}
-            {this.state.restartButton}
+            {!('report_data' in window) &&
+              this.state.restartButton
+            }
           </div>
 
           <div id='scoreContainer'>
@@ -323,7 +331,7 @@ class Report extends Component {
             <p className="headerItem">Source score: {this.state.scores.sourceScore}</p>
             <p className="headerItem">Target score: {this.state.scores.targetScore}</p>
             <p className="headerItem">Composite score: {this.state.scores.compositeScore}</p>
-            <p className="headerItem">Acceptance Status: <span style={{fontWeight: 'bold'}}>{this.state.acceptance}</span></p>
+            <p className="headerItem">Acceptance Status: <input className="manualInfo" style={{fontWeight: 'bold'}} type="text" /></p>
           </div>
           <div id='reportContainer'></div>
           <hr/>
@@ -331,9 +339,11 @@ class Report extends Component {
             <thead>
               <tr className='segmentsHeader'>
                 <th>#</th>
-                <th className="segmentCol">Source</th>
-                <th className="segmentCol">Target (Original)</th>
-                <th className="segmentCol">Target (Revised)</th>
+                <th className={this.state.targetRevised.length > 0 ? "segmentCol" : "segmentColLarge"}>Source</th>
+                <th className={this.state.targetRevised.length > 0 ? "segmentCol" : "segmentColLarge"}>Target (Original)</th>
+                {this.state.targetRevised.length > 0 &&
+                  <th className="segmentCol">Target (Revised)</th>
+                }
                 <th>Notes</th>
               </tr>
             </thead>
