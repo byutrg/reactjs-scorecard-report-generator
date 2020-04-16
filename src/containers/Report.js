@@ -264,9 +264,11 @@ class Report extends Component {
     return false
   }
 
+  escapeRegExp = (string) => string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+
   fetchHighlights(segmentId, type, text) {
     for (let highlighted of this.state.highlightedSegments[segmentId].highlights[type]) {
-      text = text.replace(new RegExp(highlighted), '<span style="background-color: #FFFF00;">' + highlighted + '</span>')
+      text = text.replace(new RegExp(this.escapeRegExp(highlighted)), '<span style="background-color: #FFFF00;">' + highlighted + '</span>')
     }
 
     return text
